@@ -49,8 +49,8 @@ function init () {
       //$(this).height(mainHeight);
       myScroll.refresh();*/
      
-    });
-  });
+//    });
+//  });
 
   // Bind the function for the reload button so it will refresh the tab data
   //$('#reload_button').bind('click', getTabData);
@@ -76,7 +76,7 @@ function setupMap(callback) {
     
     
     $.each( data.markers, function(i, marker) {
-  		$('#map_canvas').gmap('addMarker', { 
+    	$('#map_canvas').gmap('addMarker', { 
 				'position': new google.maps.LatLng(marker.latitude, marker.longitude), 
 				'bounds': true 
 			}).click(function() {
@@ -107,8 +107,6 @@ function setupMap(callback) {
 
     })
   });
-  });
-
   
 }
  
@@ -254,28 +252,4 @@ function setUpTabs(config, callback) {
   }
  
 }
-
-function setTabData(tabContent, tabData) {
-   
-  // Clear tab content first
-  tabContent.empty();
-  
-  // Loop over the array of text elements in the tab data
-  for(var i = 0; i < tabData.length; i++) {
-
-    // Get the data element from the array
-    var paragraphData = tabData[i];
-
-    // Creating a paragraph tag for each data element.
-    var paragraph = $('<p>');
-
-    // Add the text to the paragraph tag.
-    paragraph.html(paragraphData);
-
-    // Add the paragraph tag to the tabContent
-    tabContent.append(paragraph);
-  }
-}
-
-
 
