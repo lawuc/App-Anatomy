@@ -18,5 +18,5 @@ exports.getConfig = function(params, callback) {
 exports.getMap = function(params, callback) {
   console.log("in getMap");
   var cfg = require("config.js");
-  return callback(null, { data: cfg.map})
-}
+  return callback(null, { data: cfg.map});
+};
