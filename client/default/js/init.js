@@ -57,20 +57,45 @@ function init () {
 }
 
 function setupMap() {
-  $('#map_canvas').gmap().bind('init', function() { 
-  // This URL won't work on your localhost, so you need to change it
-	// see http://en.wikipedia.org/wiki/Same_origin_policy
-	$.getJSON( 'http://jquery-ui-map.googlecode.com/svn/trunk/demos/json/demo.json', function(data) { 
-		$.each( data.markers, function(i, marker) {
-			$('#map_canvas').gmap('addMarker', { 
-				'position': new google.maps.LatLng(marker.latitude, marker.longitude), 
-				'bounds': true 
-			}).click(function() {
-				$('#map_canvas').gmap('openInfoWindow', { 'content': marker.content }, this);
-			});
-		});
-	});
-});
+  function getTabData(callback) {
+
+  // Default value for tab data is local version of config.js
+  // Get the text for the tabs from the config.js file
+  var configData = config;
+  
+  // Make act call to get latest config from server
+  $fh.act({
+    act: 'getMap',
+    req: {
+    }
+  }, function (result) {
+    // Got config from server, so overwrite our local config
+    $fh.log({message: 'got config from server:' + JSON.stringify(result)});
+    configData = result.data;
+    
+    // Save it to local storage for use in loss of connectivity
+    $fh.data({
+      act: 'save',
+      key: 'config',
+      val: JSON.stringify(configData)
+    }, function (val) {
+      // Save successful, continue with initialisation
+      //setUpTabs(configData, callback);      
+    }, function (error) {
+      // Problem saving data, continue as normal
+      // Initialise app
+      //setUpTabs(configData, callback);
+    })
+  }, function (code, errorprops, params) {
+    // Failed to get config from server.
+    $fh.log({message: 'failed to get config from server'});
+    // Check if we have a config saved to local data storage
+    $fh.data({
+      key: 'config'
+    }, function (res) {
+
+    })
+  });
 }
  
 function setUpMenuBar() {
