@@ -56,20 +56,11 @@ function init () {
   //$('#reload_button').bind('click', getTabData);
 }
 
-function setupMap() {
-  function getTabData(callback) {
+function setupMap(callback) {
 
   // Default value for tab data is local version of config.js
   // Get the text for the tabs from the config.js file
   var configData = config;
-  
-  
-  $('#map_canvas').gmap().bind('init', function() { 
-  // This URL won't work on your localhost, so you need to change it
-	// see http://en.wikipedia.org/wiki/Same_origin_policy
-	$.getJSON( 'http://jquery-ui-map.googlecode.com/svn/trunk/demos/json/demo.json', function(data) { 
-		
-	});
   
   
   
