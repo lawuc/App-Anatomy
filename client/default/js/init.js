@@ -5,11 +5,11 @@ $fh.ready(function () {
 var myScroll;
 
 function init () {
-  if ('undefined' === typeof iScroll) {
+ /* if ('undefined' === typeof iScroll) {
     iScroll = exports.iScroll;
   }
   myScroll = new iScroll('content');
-
+*/
   // Load the menu bar
   //setUpLogo();
   //setUpMenuBar();
@@ -61,8 +61,7 @@ function setupMap(callback) {
     // Default value for tab data is local version of config.js
     // Get the text for the tabs from the config.js file
     var configData = config;
-    debugger;
-    console.log("hereeee")
+    console.log("hereeee");
     $('#map_canvas').gmap().bind('init', function() {
         // Make act call to get latest config from server
         $fh.act({
