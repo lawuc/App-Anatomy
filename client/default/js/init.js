@@ -9,21 +9,21 @@ function init () {
     iScroll = exports.iScroll;
   }
   myScroll = new iScroll('content');
-  
-  // Load the menu bar 
+
+  // Load the menu bar
   //setUpLogo();
-  //setUpMenuBar(); 
+  //setUpMenuBar();
   //setUpReloadButton();
-  
+
   setupMap();
-  
-  // Resolve the data to display in the tabs. Pass setContentPane function 
+
+  // Resolve the data to display in the tabs. Pass setContentPane function
   // as a callback - we do not want setContentPane called until the tab
   //  data has been loaded.
   //getTabData(setContentPane);
-  
-  
-  
+
+
+
   // Show the default tab
   //$('.default').show();
 
@@ -42,13 +42,13 @@ function init () {
       $('.pageTitle').text(title);
 
       $('.main_view').hide();
-      $(targetId).show(); 
-      
+      $(targetId).show();
+
       // Resize the scroller for each tab on click
       //var mainHeight = $(this).outerHeight();
       //$(this).height(mainHeight);
       myScroll.refresh();*/
-     
+
 //    });
 //  });
 
@@ -58,58 +58,58 @@ function init () {
 
 function setupMap(callback) {
 
-  // Default value for tab data is local version of config.js
-  // Get the text for the tabs from the config.js file
-  var configData = config;
-  
-  
-  
-  // Make act call to get latest config from server
-  $fh.act({
-    act: 'getMap',
-    req: {
-    }
-  }, function (data) {
-    // Got config from server, so overwrite our local config
-    $fh.log({message: 'got config from server:' + JSON.stringify(data)});
-    //configData = result.data;
-    
-    
-    $.each( data.markers, function(i, marker) {
-    	$('#map_canvas').gmap('addMarker', { 
-				'position': new google.maps.LatLng(marker.latitude, marker.longitude), 
-				'bounds': true 
-			}).click(function() {
-				$('#map_canvas').gmap('openInfoWindow', { 'content': marker.content }, this);
-			});
-		});
-    
-    // Save it to local storage for use in loss of connectivity
-    $fh.data({
-      act: 'save',
-      key: 'config',
-      val: JSON.stringify(configData)
-    }, function (val) {
-      // Save successful, continue with initialisation
-      //setUpTabs(configData, callback);      
-    }, function (error) {
-      // Problem saving data, continue as normal
-      // Initialise app
-      //setUpTabs(configData, callback);
-    })
-  }, function (code, errorprops, params) {
-    // Failed to get config from server.
-    $fh.log({message: 'failed to get config from server'});
-    // Check if we have a config saved to local data storage
-    $fh.data({
-      key: 'config'
-    }, function (res) {
+    // Default value for tab data is local version of config.js
+    // Get the text for the tabs from the config.js file
+    var configData = config;
 
-    })
-  });
-  
+    $('#map_canvas').gmap().bind('init', function() {
+
+        // Make act call to get latest config from server
+        $fh.act({
+            act: 'getMap',
+            req: {
+            }
+        }, function (data) {
+            // Got config from server, so overwrite our local config
+            $fh.log({message: 'got config from server:' + JSON.stringify(data)});
+            //configData = result.data;
+
+
+            $.each(data.markers, function(i, marker) {
+                $('#map_canvas').gmap('addMarker', {
+                    'position': new google.maps.LatLng(marker.latitude, marker.longitude),
+                    'bounds': true
+                }).click(function() {
+                    $('#map_canvas').gmap('openInfoWindow', { 'content': marker.content }, this);
+                });
+            });
+
+            // Save it to local storage for use in loss of connectivity
+            $fh.data({
+                act: 'save',
+                key: 'config',
+                val: JSON.stringify(configData)
+            }, function (val) {
+                // Save successful, continue with initialisation
+                //setUpTabs(configData, callback);
+            }, function (error) {
+                // Problem saving data, continue as normal
+                // Initialise app
+                //setUpTabs(configData, callback);
+            })
+        }, function (code, errorprops, params) {
+            // Failed to get config from server.
+            $fh.log({message: 'failed to get config from server'});
+            // Check if we have a config saved to local data storage
+            $fh.data({
+                key: 'config'
+            }, function (res) {
+
+            })
+        });
+    });
 }
- 
+
 function setUpMenuBar() {
  // Check prefs to see whenre menu bar should be placed - top or bottom
   var menu_container = $(prefs.menu_container);
@@ -145,7 +145,7 @@ function getTabData(callback) {
   // Default value for tab data is local version of config.js
   // Get the text for the tabs from the config.js file
   var configData = config;
-  
+
   // Make act call to get latest config from server
   $fh.act({
     act: 'getConfig',
@@ -156,7 +156,7 @@ function getTabData(callback) {
     // Got config from server, so overwrite our local config
     $fh.log({message: 'got config from server:' + JSON.stringify(result)});
     configData = result.data;
-    
+
     // Save it to local storage for use in loss of connectivity
     $fh.data({
       act: 'save',
@@ -164,7 +164,7 @@ function getTabData(callback) {
       val: JSON.stringify(configData)
     }, function (val) {
       // Save successful, continue with initialisation
-      setUpTabs(configData, callback);      
+      setUpTabs(configData, callback);
     }, function (error) {
       // Problem saving data, continue as normal
       // Initialise app
@@ -177,7 +177,7 @@ function getTabData(callback) {
     $fh.data({
       key: 'config'
     }, function (res) {
-      
+
       // Check if we got back stored data
       if( null === res.val ) {
         $fh.log({message: 'No config found in local data store'});
@@ -187,34 +187,34 @@ function getTabData(callback) {
         configData = JSON.parse(res.val);
         $fh.log({message: 'got config from local data store:' + JSON.stringify(configData)});
       }
-    
+
       // Initialise app
-      setUpTabs(configData, callback);      
+      setUpTabs(configData, callback);
     }, function (error) {
       // No stored config, log and use default config instead
       $fh.log({message: 'failed to get config from local data store. Using default'});
       setUpTabs(configData, callback);
     })
   });
-}  
-  
+}
+
 
 function setContentPane() {
   var viewportHeight, pad, header_height, footer_height, top, bottom, windowHeight;
-  
+
   // User outer height to ensure borders are included in height
-  header_height = $("#header").outerHeight(); 
+  header_height = $("#header").outerHeight();
   footer_height = $("#footer").outerHeight();
-  
+
   top = (header_height) + "px";
   bottom = footer_height+"px";
 
   //log.debug("top: "+ top + ", bottom: "+bottom);
   windowHeight = window.height;
   if ('undefined' === typeof windowHeight || null === windowHeight) {
-    windowHeight = $(window).height();  
+    windowHeight = $(window).height();
   }
-  
+
   $('#wrapper').height(windowHeight);
 
   viewportHeight = windowHeight - (footer_height + header_height);
@@ -225,9 +225,9 @@ function setContentPane() {
 }
 
 function setUpTabs(config, callback) {
-  
+
   var tabDataSet = config.tabData;
-  
+
   // Iterate over each div defined in the content div.
   // Each of these divs represents a pane for displaying data
   // associated with a specific tab
@@ -237,8 +237,8 @@ function setUpTabs(config, callback) {
     var tabContentId = this.id;
 
     // Get the data for the div from the config varibale defined in config.js
-    var tabData = tabDataSet[tabContentId];  
-    
+    var tabData = tabDataSet[tabContentId];
+
     if( typeof(tabData) !== 'undefined') {
       setTabData($(this), tabData);
     }
@@ -250,6 +250,6 @@ function setUpTabs(config, callback) {
   if( callback && typeof(callback) === 'function' ) {
     callback();
   }
- 
+
 }
 
