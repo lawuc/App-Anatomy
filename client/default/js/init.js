@@ -28,6 +28,7 @@ function init () {
   // Bind a click event for each tab
   $('.nav_item').each(function () {
     $(this).bind('click', function (e) {
+      debugger;
       var mainTitle = $('.pageTitle').text();
       e.preventDefault();
       var targetId = $(this).find('a').attr('href');
