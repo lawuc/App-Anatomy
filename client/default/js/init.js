@@ -15,7 +15,7 @@ function init () {
   //setUpMenuBar();
   //setUpReloadButton();
 
-  setupMap();
+  setupMap(setContentPane);
 
   // Resolve the data to display in the tabs. Pass setContentPane function
   // as a callback - we do not want setContentPane called until the tab
@@ -56,7 +56,7 @@ function init () {
   //$('#reload_button').bind('click', getTabData);
 }
 
-function setupMap() {
+function setupMap(callback) {
 
     // Default value for tab data is local version of config.js
     // Get the text for the tabs from the config.js file
