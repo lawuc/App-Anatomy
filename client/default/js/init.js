@@ -11,22 +11,24 @@ function init () {
   myScroll = new iScroll('content');
   
   // Load the menu bar 
-  setUpLogo();
-  setUpMenuBar(); 
-  setUpReloadButton();
+  //setUpLogo();
+  //setUpMenuBar(); 
+  //setUpReloadButton();
+  
+  setupMap();
   
   // Resolve the data to display in the tabs. Pass setContentPane function 
   // as a callback - we do not want setContentPane called until the tab
   //  data has been loaded.
-  getTabData(setContentPane);
+  //getTabData(setContentPane);
   
   
   
   // Show the default tab
-  $('.default').show();
+  //$('.default').show();
 
   // Bind a click event for each tab
-  $('.nav_item').each(function () {
+  /*$('.nav_item').each(function () {
     $(this).bind('click', function (e) {
       debugger;
       var mainTitle = $('.pageTitle').text();
@@ -43,18 +45,33 @@ function init () {
       $(targetId).show(); 
       
       // Resize the scroller for each tab on click
-      /*var mainHeight = $(this).outerHeight();
-      $(this).height(mainHeight);*/
-      myScroll.refresh();
+      //var mainHeight = $(this).outerHeight();
+      //$(this).height(mainHeight);
+      myScroll.refresh();*/
      
     });
   });
 
   // Bind the function for the reload button so it will refresh the tab data
-  $('#reload_button').bind('click', getTabData);
+  //$('#reload_button').bind('click', getTabData);
 }
 
-
+function setupMap() {
+  $('#map_canvas').gmap().bind('init', function() { 
+  // This URL won't work on your localhost, so you need to change it
+	// see http://en.wikipedia.org/wiki/Same_origin_policy
+	$.getJSON( 'http://jquery-ui-map.googlecode.com/svn/trunk/demos/json/demo.json', function(data) { 
+		$.each( data.markers, function(i, marker) {
+			$('#map_canvas').gmap('addMarker', { 
+				'position': new google.maps.LatLng(marker.latitude, marker.longitude), 
+				'bounds': true 
+			}).click(function() {
+				$('#map_canvas').gmap('openInfoWindow', { 'content': marker.content }, this);
+			});
+		});
+	});
+});
+}
  
 function setUpMenuBar() {
  // Check prefs to see whenre menu bar should be placed - top or bottom
