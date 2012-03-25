@@ -66,7 +66,7 @@ function setupMap(callback) {
     $('#map_canvas').gmap().bind('init', function() {
         // Make act call to get latest config from server
         $fh.act({
-            act: 'getMap',
+            act: 'getConfig',
             req: {
             }
         }, function (data) {
