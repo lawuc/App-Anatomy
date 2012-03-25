@@ -61,9 +61,8 @@ function setupMap(callback) {
     // Default value for tab data is local version of config.js
     // Get the text for the tabs from the config.js file
     var configData = config;
-
+    debugger;
     $('#map_canvas').gmap().bind('init', function() {
-        debugger;
         // Make act call to get latest config from server
         $fh.act({
             act: 'getMap',
