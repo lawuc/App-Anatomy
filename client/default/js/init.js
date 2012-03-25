@@ -63,15 +63,35 @@ function setupMap() {
   // Get the text for the tabs from the config.js file
   var configData = config;
   
+  
+  $('#map_canvas').gmap().bind('init', function() { 
+  // This URL won't work on your localhost, so you need to change it
+	// see http://en.wikipedia.org/wiki/Same_origin_policy
+	$.getJSON( 'http://jquery-ui-map.googlecode.com/svn/trunk/demos/json/demo.json', function(data) { 
+		
+	});
+  
+  
+  
   // Make act call to get latest config from server
   $fh.act({
     act: 'getMap',
     req: {
     }
-  }, function (result) {
+  }, function (data) {
     // Got config from server, so overwrite our local config
-    $fh.log({message: 'got config from server:' + JSON.stringify(result)});
-    configData = result.data;
+    $fh.log({message: 'got config from server:' + JSON.stringify(data)});
+    //configData = result.data;
+    
+    
+    $.each( data.markers, function(i, marker) {
+  		$('#map_canvas').gmap('addMarker', { 
+				'position': new google.maps.LatLng(marker.latitude, marker.longitude), 
+				'bounds': true 
+			}).click(function() {
+				$('#map_canvas').gmap('openInfoWindow', { 'content': marker.content }, this);
+			});
+		});
     
     // Save it to local storage for use in loss of connectivity
     $fh.data({
@@ -96,6 +116,9 @@ function setupMap() {
 
     })
   });
+  });
+
+  
 }
  
 function setUpMenuBar() {
