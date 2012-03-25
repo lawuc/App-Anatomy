@@ -56,7 +56,7 @@ function init () {
   //$('#reload_button').bind('click', getTabData);
 }
 
-function setupMap(callback) {
+function setupMap() {
 
     // Default value for tab data is local version of config.js
     // Get the text for the tabs from the config.js file
