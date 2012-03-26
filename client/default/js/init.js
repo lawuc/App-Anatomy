@@ -14,9 +14,7 @@ function setupMap() {
     // Get the text for the tabs from the config.js file
     var configData = config;
     console.log("hereeee");
-    
-    $('#map_canvas').gmap({ 'center': '42.345573,-71.098326' });
-    
+        
     $('#map_canvas').gmap().bind('init', function() { 
   
 	$.getJSON( {
