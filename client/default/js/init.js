@@ -16,6 +16,39 @@ function setupMap() {
     console.log("hereeee");
     
     $('#map_canvas').gmap({ 'center': '42.345573,-71.098326' });
+    
+    $('#map_canvas').gmap().bind('init', function() { 
+  
+	$.getJSON( {
+   "markers":[
+      {
+         "latitude":57.7973333,
+         "longitude":12.0502107,
+         "title":"Angered",
+         "content":"Representing :)"
+      },
+      {
+         "latitude":57.6969943,
+         "longitude":11.9865,
+         "title":"Gothenburg",
+         "content":"Swedens second largest city"
+      }
+   ]
+}, function(data) { 
+		$.each( data.markers, function(i, marker) {
+			$('#map_canvas').gmap('addMarker', { 
+				'position': new google.maps.LatLng(marker.latitude, marker.longitude), 
+				'bounds': true 
+			}).click(function() {
+				$('#map_canvas').gmap('openInfoWindow', { 'content': marker.content }, this);
+			});
+		});
+	});
+});
+    
+    
+    
+    
     /*$('#map_canvas').gmap().bind('init', function() {
         // Make act call to get latest config from server
         $fh.act({
