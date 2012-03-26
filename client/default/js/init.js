@@ -5,64 +5,18 @@ $fh.ready(function () {
 var myScroll;
 
 function init () {
- /* if ('undefined' === typeof iScroll) {
-    iScroll = exports.iScroll;
-  }
-  myScroll = new iScroll('content');
-*/
-  // Load the menu bar
-  //setUpLogo();
-  //setUpMenuBar();
-  //setUpReloadButton();
-
-  setupMap(setContentPane);
-
-  // Resolve the data to display in the tabs. Pass setContentPane function
-  // as a callback - we do not want setContentPane called until the tab
-  //  data has been loaded.
-  //getTabData(setContentPane);
-
-
-
-  // Show the default tab
-  //$('.default').show();
-
-  // Bind a click event for each tab
-  /*$('.nav_item').each(function () {
-    $(this).bind('click', function (e) {
-      debugger;
-      var mainTitle = $('.pageTitle').text();
-      e.preventDefault();
-      var targetId = $(this).find('a').attr('href');
-
-      var title = $(this).find('h2').text();
-
-      $('div').removeClass('button_active');
-      $(this).addClass('button_active');
-      $('.pageTitle').text(title);
-
-      $('.main_view').hide();
-      $(targetId).show();
-
-      // Resize the scroller for each tab on click
-      //var mainHeight = $(this).outerHeight();
-      //$(this).height(mainHeight);
-      myScroll.refresh();*/
-
-//    });
-//  });
-
-  // Bind the function for the reload button so it will refresh the tab data
-  //$('#reload_button').bind('click', getTabData);
+  setupMap();
 }
 
-function setupMap(callback) {
+function setupMap() {
 
     // Default value for tab data is local version of config.js
     // Get the text for the tabs from the config.js file
     var configData = config;
     console.log("hereeee");
-    $('#map_canvas').gmap().bind('init', function() {
+    
+    $('#map_canvas').gmap({ 'center': '42.345573,-71.098326' });
+    /*$('#map_canvas').gmap().bind('init', function() {
         // Make act call to get latest config from server
         $fh.act({
             act: 'getConfig',
@@ -106,7 +60,7 @@ function setupMap(callback) {
 
             })
         });
-    });
+    });*/
 }
 
 function setUpMenuBar() {
